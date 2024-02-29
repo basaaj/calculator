@@ -46,7 +46,7 @@ buttons.forEach(button => {
             items.splice(0, items.length);
         }
 
-        else if (button.value === "equals") {
+        else if (button.value === "equals" && items.length >= 3) {
             let soln = operate(items[1], Number(items[0]), Number(items[2]));
 
             if (!Number.isInteger(soln)) {
@@ -77,12 +77,12 @@ buttons.forEach(button => {
             display.textContent += " " + button.textContent + " ";
         }
 
-        else if (display.textContent == 0) {
+        else if (display.textContent == 0 && button.value !== "equals") {
             items.push(button.textContent);
             display.textContent = button.textContent;
         }
 
-        else {
+        else if (button.value !== "equals") {
             items.push(button.textContent);
             display.textContent += button.textContent;
         }
