@@ -48,6 +48,11 @@ buttons.forEach(button => {
 
         else if (button.value === "equals") {
             let soln = operate(items[1], Number(items[0]), Number(items[2]));
+
+            if (!Number.isInteger(soln)) {
+                soln = soln.toFixed(7);
+            }
+
             display.textContent = soln;
             items.splice(0, items.length);
             items.push(soln);
@@ -58,6 +63,11 @@ buttons.forEach(button => {
 
             if (items.length >= 3) {
                 let soln = operate(items[1], Number(items[0]), Number(items[2]));
+                
+                if (!Number.isInteger(soln)) {
+                    soln = soln.toFixed(7);
+                }
+
                 display.textContent = soln;
                 items.splice(0, items.length);
                 items.push(soln, button.textContent);
