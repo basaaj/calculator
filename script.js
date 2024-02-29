@@ -3,6 +3,10 @@ const secondNum = 0;
 const operator = "+";
 const buttons = document.querySelectorAll('button');
 const display = document.querySelector('.display');
+const clear = document.querySelector('button[type="clear"]');
+const equals = document.querySelector('button[type="equals"]');
+const operators = document.querySelectorAll('button[type="operator"]');
+const digits = document.querySelectorAll('button[type="digit"]');
 let items = [];
 
 function add(a, b) {
@@ -39,55 +43,62 @@ function operate(op, a, b) {
     }
 }
 
-buttons.forEach(button => {
-    button.addEventListener('click', function() {
-        if (button.value === "clear") {
-            display.textContent = 0;
-            items.splice(0, items.length);
+clear.addEventListener('click', function() {
+    display.textContent = 0;
+    items.splice(0, items.length);
+});
+
+equals.addEventListener('click', function() {
+    if (items.length >= 3) {
+        let soln = operate(items[1], Number(items[0]), Number(items[2]));
+
+        if (!Number.isInteger(soln) && !(typeof soln === 'string')) {
+            soln = soln.toFixed(7);
         }
 
-        else if (button.value === "equals" && items.length >= 3) {
-            let soln = operate(items[1], Number(items[0]), Number(items[2]));
+        display.textContent = soln;
+        items.splice(0, items.length);
 
-            if (!Number.isInteger(soln) && !(typeof soln === 'string')) {
+        //TODO: if pressed operator after, will get NaN...
+        if (!(typeof soln === 'string')) {
+            items.push(soln);
+        }
+    }
+});
+
+operators.forEach(operator => {
+    operator.addEventListener('click', function() {
+        items.push(operator.textContent);
+
+        if (items.length >= 3) {
+            let soln = operate(items[1], Number(items[0]), Number(items[2]));
+            
+            if (!Number.isInteger(soln)) {
                 soln = soln.toFixed(7);
             }
 
             display.textContent = soln;
             items.splice(0, items.length);
-
-            //TODO: if pressed operator after, will get NaN...
-            if (!(typeof soln === 'string')) {
-                items.push(soln);
-            }
+            items.push(soln, operator.textContent);
         }
 
-        else if (button.value === "operator") {
-            items.push(button.textContent);
+        display.textContent += " " + operator.textContent + " ";
+    });
+});
 
-            if (items.length >= 3) {
-                let soln = operate(items[1], Number(items[0]), Number(items[2]));
-                
-                if (!Number.isInteger(soln)) {
-                    soln = soln.toFixed(7);
-                }
+digits.forEach(digit => {
+    digit.addEventListener('click', function() {
+        items.push(digit.textContent);
 
-                display.textContent = soln;
-                items.splice(0, items.length);
-                items.push(soln, button.textContent);
-            }
-
-            display.textContent += " " + button.textContent + " ";
+        // if digit and display is 0 or some other digit after an operation
+        //TODO: replace number in display if previous operation is equals
+        if (display.textContent == 0) {
+            display.textContent = digit.textContent;
         }
 
-        else if (display.textContent == 0 && button.value !== "equals") {
-            items.push(button.textContent);
-            display.textContent = button.textContent;
-        }
-
-        else if (button.value !== "equals") {
-            items.push(button.textContent);
-            display.textContent += button.textContent;
+        // if digit and display is some digits inputted by user
+        else {
+            display.textContent += digit.textContent;
         }
     });
 });
