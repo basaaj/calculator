@@ -7,8 +7,8 @@ body {
 }
 
 .container {
-    width: 600px;
-    height:650px;
+    width: 500px;
+    height:700px;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -26,14 +26,54 @@ body {
 .buttons {
     height: 70%;
     width: 95%;
-    padding-top: 20px; 
+    padding-top: 5px; 
     border: blue 2px solid;
     display: flex;
+    flex-direction: column;
+}
+
+.container-top {
+    display: flex;
+    flex-wrap: wrap;
+    height: 60%;
+}
+
+.container-bottom {
+    display: flex;
+    flex-direction: row;
+    height: 40%;
+}
+
+.container-bottom button {
+    height: 50%;
+}
+
+.container-left {
+    width: 75%;
+}
+
+.container-right {
+    width: 25%;
+    padding-right: 9px;
 }
 
 button {
-    width: 100px;
-    height: 100px;
+    width: 24%;
     border-radius: 5px;
     margin: 2px;
+}
+
+.container-left button {
+    width: 32%;
+    margin: 2px 0;
+    margin-left: 1px;
+}
+
+button[type="decimal"] {
+    width: 65%;
+}
+
+button[type="equals"] {
+    height: 102%;
+    width: 100%;
 }
