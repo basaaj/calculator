@@ -35,7 +35,7 @@ function operate(op, a, b) {
     }
 
     else {
-        return divide(a,b);
+        return b != 0 ? divide(a, b) : "ERROR!";
     }
 }
 
@@ -49,13 +49,17 @@ buttons.forEach(button => {
         else if (button.value === "equals" && items.length >= 3) {
             let soln = operate(items[1], Number(items[0]), Number(items[2]));
 
-            if (!Number.isInteger(soln)) {
+            if (!Number.isInteger(soln) && !(typeof soln === 'string')) {
                 soln = soln.toFixed(7);
             }
 
             display.textContent = soln;
             items.splice(0, items.length);
-            items.push(soln);
+
+            //TODO: if pressed operator after, will get NaN...
+            if (!(typeof soln === 'string')) {
+                items.push(soln);
+            }
         }
 
         else if (button.value === "operator") {
@@ -71,7 +75,6 @@ buttons.forEach(button => {
                 display.textContent = soln;
                 items.splice(0, items.length);
                 items.push(soln, button.textContent);
-                console.log("bonk");
             }
 
             display.textContent += " " + button.textContent + " ";
