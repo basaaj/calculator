@@ -1,13 +1,12 @@
-const firstNum = 0;
-const secondNum = 0;
-const operator = "+";
-const buttons = document.querySelectorAll('button');
+let num1 = '';
+let num2 = '';
+let op = "";
+let currNum = '';
 const display = document.querySelector('.display');
 const clear = document.querySelector('button[type="clear"]');
 const equals = document.querySelector('button[type="equals"]');
 const operators = document.querySelectorAll('button[type="operator"]');
 const digits = document.querySelectorAll('button[type="digit"]');
-let items = [];
 
 function add(a, b) {
     return a + b;
@@ -45,60 +44,55 @@ function operate(op, a, b) {
 
 clear.addEventListener('click', function() {
     display.textContent = 0;
-    items.splice(0, items.length);
+    num1 = 0;
+    num2 = 0;
+    op = '';
 });
 
 equals.addEventListener('click', function() {
-    if (items.length >= 3) {
-        let soln = operate(items[1], Number(items[0]), Number(items[2]));
+    if (!num2) {
+        num2 = Number(currNum);
+        currNum = '';
+    }
 
-        if (!Number.isInteger(soln) && !(typeof soln === 'string')) {
-            soln = soln.toFixed(7);
-        }
-
-        display.textContent = soln;
-        items.splice(0, items.length);
-
-        //TODO: if pressed operator after, will get NaN...
-        if (!(typeof soln === 'string')) {
-            items.push(soln);
-        }
+    if (num1 && op && num2) {
+        num1 = operate(op, Number(num1), Number(num2));
+        display.textContent = num1;
+        num2 = '';
+        op = '';
     }
 });
 
 operators.forEach(operator => {
     operator.addEventListener('click', function() {
-        items.push(operator.textContent);
-
-        if (items.length >= 3) {
-            let soln = operate(items[1], Number(items[0]), Number(items[2]));
-            
-            if (!Number.isInteger(soln)) {
-                soln = soln.toFixed(7);
-            }
-
-            display.textContent = soln;
-            items.splice(0, items.length);
-            items.push(soln, operator.textContent);
+        if (!num1) {
+            num1 = Number(currNum);
+            op = operator.textContent;
+            display.textContent += operator.textContent;
+            currNum = '';
         }
 
-        display.textContent += " " + operator.textContent + " ";
+        else if (!num2) {
+            num2 = Number(currNum);
+            num1 = operate(op, Number(num1), Number(num2));
+            op = operator.textContent;
+            display.textContent = num1+operator.textContent;
+            num2 = '';
+            currNum = '';
+        }
     });
 });
 
 digits.forEach(digit => {
     digit.addEventListener('click', function() {
-        items.push(digit.textContent);
-
-        // if digit and display is 0 or some other digit after an operation
-        //TODO: replace number in display if previous operation is equals
         if (display.textContent == 0) {
             display.textContent = digit.textContent;
         }
 
-        // if digit and display is some digits inputted by user
         else {
             display.textContent += digit.textContent;
         }
+
+        currNum += digit.textContent;
     });
 });
