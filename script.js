@@ -43,7 +43,7 @@ function operate(op, a, b) {
     }
 
     if (!Number.isInteger(result) && !(typeof result === 'string')) {
-        result = result.toPrecision(7);
+        result = result.toFixed(7);
     }
 
     return result;
