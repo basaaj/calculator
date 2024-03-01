@@ -21,25 +21,32 @@ function multiply(a, b) {
 }
 
 function divide(a, b) {
-    return a / b;
+    return b != 0 ? a / b : "error!";
 }
 
 function operate(op, a, b) {
+    let result = '';
     if (op === "+") {
-        return add(a,b);
+        result = add(a,b);
     }
 
     else if (op === "-") {
-        return subtract(a,b);
+        result = subtract(a,b);
     }
 
     else if (op === "*") {
-        return multiply(a,b);
+        result = multiply(a,b);
     }
 
     else {
-        return b != 0 ? divide(a, b) : "ERROR!";
+        result = divide(a,b);
     }
+
+    if (!Number.isInteger(result) && !(typeof result === 'string')) {
+        result = result.toPrecision(7);
+    }
+
+    return result;
 }
 
 clear.addEventListener('click', function() {
