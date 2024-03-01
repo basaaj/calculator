@@ -1,9 +1,9 @@
-let num1 = '';
-let num2 = '';
-let op = "";
-let currNum = '';
-let equalPressed = false;
-const errorMsg = "error :("
+let num1 = '';                      // first number for operation
+let num2 = '';                      // second number for operation
+let op = "";                        // operator
+let currNum = '';                   // current number user is inputting
+let equalPressed = false;           // checks if user has pressed equals button
+const errorMsg = "error :(";        // error message
 const display = document.querySelector('#display');
 const clear = document.querySelector('button[value="clear"]');
 const equals = document.querySelector('button[value="equals"]');
@@ -28,22 +28,22 @@ function divide(a, b) {
 
 function operate(op, a, b) {
     let result = '';
-    if (op === "+") {
-        result = add(a,b);
+    switch(op) {
+        case '+':
+            result = add(a,b);
+            break;
+        case '-':
+            result = subtract(a,b);
+            break;
+        case '*':
+            result = multiply(a,b);
+            break;
+        case '/':
+            result = divide(a,b);
+            break;
     }
 
-    else if (op === "-") {
-        result = subtract(a,b);
-    }
-
-    else if (op === "*") {
-        result = multiply(a,b);
-    }
-
-    else {
-        result = divide(a,b);
-    }
-
+    // Round result if applicable
     if (!Number.isInteger(result) && !(typeof result === 'string')) {
         result = result.toFixed(7);
     }
@@ -51,12 +51,17 @@ function operate(op, a, b) {
     return result;
 }
 
-clear.addEventListener('click', function() {
-    display.textContent = 0;
+function clearVars() {
     num1 = 0;
     num2 = 0;
     currNum = '';
     op = '';
+    equalPressed = false;
+}
+
+clear.addEventListener('click', function() {
+    display.textContent = 0;
+    clearVars();
 });
 
 equals.addEventListener('click', function() {
@@ -65,8 +70,9 @@ equals.addEventListener('click', function() {
         currNum = '';
     }
 
+    // If we have proper operands and operator, calculate and display result
     if (typeof num1 === 'number' && op && typeof num1 === 'number') {
-        num1 = operate(op, Number(num1), Number(num2));
+        num1 = operate(op, num1, num2);
         display.textContent = num1;
 
         if (num1 != errorMsg) {
@@ -85,23 +91,30 @@ operators.forEach(operator => {
             if (!num1) {
                 num1 = Number(currNum);
                 display.textContent += operator.textContent;
+                op = operator.textContent;
                 currNum = '';
             }
     
             else if (!num2 && !equalPressed) {
                 num2 = Number(currNum);
-                num1 = operate(op, Number(num1), Number(num2));
-                display.textContent = num1+operator.textContent;
+                num1 = operate(op, num1, num2);
+                display.textContent = num1;
+
+                if (num1 != errorMsg) {
+                    num1 = Number(num1);
+                    display.textContent += operator.textContent;
+                    op = operator.textContent;
+                }
+
                 num2 = '';
                 currNum = '';
             }
     
             else if (equalPressed) {
                 display.textContent += operator.textContent;
+                op = operator.textContent;
                 equalPressed = false;
             }
-    
-            op = operator.textContent;
         }
     });
 });
@@ -110,11 +123,7 @@ digits.forEach(digit => {
     digit.addEventListener('click', function() {
         if (display.textContent == 0 || display.textContent == errorMsg || equalPressed) {
             display.textContent = digit.textContent;
-            equalPressed = false;
-            num1 = '';
-            num2 = '';
-            currNum = '';
-            op = '';
+            clearVars();
         }
 
         else {
