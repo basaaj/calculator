@@ -63,7 +63,7 @@ equals.addEventListener('click', function() {
         currNum = '';
     }
 
-    if (num1 && op && num2) {
+    if (Number.isInteger(num1) && op && Number.isInteger(num2)) {
         num1 = operate(op, Number(num1), Number(num2));
         display.textContent = num1;
         num2 = '';
