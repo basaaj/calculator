@@ -4,8 +4,8 @@ let op = "";
 let currNum = '';
 let equalPressed = false;
 const display = document.querySelector('.display');
-const clear = document.querySelector('button[type="clear"]');
-const equals = document.querySelector('button[type="equals"]');
+const clear = document.querySelector('button[value="clear"]');
+const equals = document.querySelector('button[value="equals"]');
 const operators = document.querySelectorAll('button[type="operator"]');
 const digits = document.querySelectorAll('button[type="digit"]');
 

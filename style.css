@@ -58,3 +58,9 @@ button {
 button[type="digit"] {
     background-color: rgb(251, 125, 135);
 }
+
+button[type="main"] {
+    background-color: rgb(255, 92, 105);
+}
+
+
