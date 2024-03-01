@@ -59,6 +59,11 @@ function clearVars() {
     equalPressed = false;
 }
 
+function updateOp(operator) {
+    display.textContent += operator.textContent;
+    op = operator.textContent;
+}
+
 clear.addEventListener('click', function() {
     display.textContent = 0;
     clearVars();
@@ -90,8 +95,7 @@ operators.forEach(operator => {
         if (display.textContent !== errorMsg) {
             if (!num1) {
                 num1 = Number(currNum);
-                display.textContent += operator.textContent;
-                op = operator.textContent;
+                updateOp(operator);
                 currNum = '';
             }
     
@@ -102,8 +106,7 @@ operators.forEach(operator => {
 
                 if (num1 != errorMsg) {
                     num1 = Number(num1);
-                    display.textContent += operator.textContent;
-                    op = operator.textContent;
+                    updateOp(operator);
                 }
 
                 num2 = '';
@@ -111,8 +114,7 @@ operators.forEach(operator => {
             }
     
             else if (equalPressed) {
-                display.textContent += operator.textContent;
-                op = operator.textContent;
+                updateOp(operator);
                 equalPressed = false;
             }
         }
