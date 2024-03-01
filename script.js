@@ -3,7 +3,7 @@ let num2 = '';
 let op = "";
 let currNum = '';
 let equalPressed = false;
-const display = document.querySelector('.display');
+const display = document.querySelector('#display');
 const clear = document.querySelector('button[value="clear"]');
 const equals = document.querySelector('button[value="equals"]');
 const operators = document.querySelectorAll('button[type="operator"]');
