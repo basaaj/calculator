@@ -3,6 +3,7 @@ let num2 = '';
 let op = "";
 let currNum = '';
 let equalPressed = false;
+const errorMsg = "error :("
 const display = document.querySelector('#display');
 const clear = document.querySelector('button[value="clear"]');
 const equals = document.querySelector('button[value="equals"]');
@@ -22,7 +23,7 @@ function multiply(a, b) {
 }
 
 function divide(a, b) {
-    return b != 0 ? a / b : "error!";
+    return b != 0 ? a / b : errorMsg;
 }
 
 function operate(op, a, b) {
@@ -54,6 +55,7 @@ clear.addEventListener('click', function() {
     display.textContent = 0;
     num1 = 0;
     num2 = 0;
+    currNum = '';
     op = '';
 });
 
@@ -74,32 +76,34 @@ equals.addEventListener('click', function() {
 
 operators.forEach(operator => {
     operator.addEventListener('click', function() {
-        if (!num1) {
-            num1 = Number(currNum);
-            display.textContent += operator.textContent;
-            currNum = '';
+        if (display.textContent !== errorMsg) {
+            if (!num1) {
+                num1 = Number(currNum);
+                display.textContent += operator.textContent;
+                currNum = '';
+            }
+    
+            else if (!num2 && !equalPressed) {
+                num2 = Number(currNum);
+                num1 = operate(op, Number(num1), Number(num2));
+                display.textContent = num1+operator.textContent;
+                num2 = '';
+                currNum = '';
+            }
+    
+            else if (equalPressed) {
+                display.textContent += operator.textContent;
+                equalPressed = false;
+            }
+    
+            op = operator.textContent;
         }
-
-        else if (!num2 && !equalPressed) {
-            num2 = Number(currNum);
-            num1 = operate(op, Number(num1), Number(num2));
-            display.textContent = num1+operator.textContent;
-            num2 = '';
-            currNum = '';
-        }
-
-        else if (equalPressed) {
-            display.textContent += operator.textContent;
-            equalPressed = false;
-        }
-
-        op = operator.textContent;
     });
 });
 
 digits.forEach(digit => {
     digit.addEventListener('click', function() {
-        if (display.textContent == 0 || equalPressed) {
+        if (display.textContent == 0 || display.textContent == errorMsg || equalPressed) {
             display.textContent = digit.textContent;
             equalPressed = false;
             num1 = '';
