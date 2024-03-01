@@ -2,6 +2,7 @@ let num1 = '';
 let num2 = '';
 let op = "";
 let currNum = '';
+let equalPressed = false;
 const display = document.querySelector('.display');
 const clear = document.querySelector('button[type="clear"]');
 const equals = document.querySelector('button[type="equals"]');
@@ -67,6 +68,7 @@ equals.addEventListener('click', function() {
         display.textContent = num1;
         num2 = '';
         op = '';
+        equalPressed = true;
     }
 });
 
@@ -74,26 +76,36 @@ operators.forEach(operator => {
     operator.addEventListener('click', function() {
         if (!num1) {
             num1 = Number(currNum);
-            op = operator.textContent;
             display.textContent += operator.textContent;
             currNum = '';
         }
 
-        else if (!num2) {
+        else if (!num2 && !equalPressed) {
             num2 = Number(currNum);
             num1 = operate(op, Number(num1), Number(num2));
-            op = operator.textContent;
             display.textContent = num1+operator.textContent;
             num2 = '';
             currNum = '';
         }
+
+        else if (equalPressed) {
+            display.textContent += operator.textContent;
+            equalPressed = false;
+        }
+
+        op = operator.textContent;
     });
 });
 
 digits.forEach(digit => {
     digit.addEventListener('click', function() {
-        if (display.textContent == 0) {
+        if (display.textContent == 0 || equalPressed) {
             display.textContent = digit.textContent;
+            equalPressed = false;
+            num1 = '';
+            num2 = '';
+            currNum = '';
+            op = '';
         }
 
         else {
