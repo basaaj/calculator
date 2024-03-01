@@ -65,9 +65,14 @@ equals.addEventListener('click', function() {
         currNum = '';
     }
 
-    if (Number.isInteger(num1) && op && Number.isInteger(num2)) {
+    if (typeof num1 === 'number' && op && typeof num1 === 'number') {
         num1 = operate(op, Number(num1), Number(num2));
         display.textContent = num1;
+
+        if (num1 != errorMsg) {
+            num1 = Number(num1);
+        }
+
         num2 = '';
         op = '';
         equalPressed = true;
